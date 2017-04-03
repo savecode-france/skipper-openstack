@@ -45,10 +45,10 @@ module.exports = function SwiftStore(globalOpts) {
 
             receiver._write = function onFile(__newFile, encoding, done) {
                 var client = getClient(options.credentials);
-                console.log("Uploading file with name", __newFile.filename);
+                console.log("Uploading file with name", __newFile.fd);
                 __newFile.pipe(client.upload({
                     container: options.container,
-                    remote: __newFile.filename
+                    remote: __newFile.fd
                 }, function(err, value) {
                   console.log(err);
                   console.log(value);
@@ -61,7 +61,7 @@ module.exports = function SwiftStore(globalOpts) {
                 }));
 
                 __newFile.on("end", function(err, value) {
-                  console.log("finished uploading", __newFile.filename);
+                  console.log("finished uploading", __newFile.fd);
                     receiver.emit('finish', err, value );
                     done();
                 });
